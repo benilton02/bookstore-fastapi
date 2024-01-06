@@ -57,7 +57,7 @@ class BooksUseCase:
 
 class UsersUseCase:
 
-    def create_user(self, email, password, access_token):
+    def create_user(self, email, password):
         
         try:
             new_user = Users(email=email, password=password)
@@ -114,7 +114,7 @@ class UsersUseCase:
                 detail='Invalid access token'
             )
 
-        user_on_db = session.query(Users).filter_by(email=data['email']).one_or_none()
+        user_on_db = session.query(Users).filter_by(email=data['sub']).one_or_none()
 
         if user_on_db is None:
             raise HTTPException(

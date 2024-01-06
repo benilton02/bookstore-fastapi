@@ -4,9 +4,7 @@ from fastapi.security import OAuth2PasswordBearer
 
 from use_cases.use_cases import UsersUseCase
 
-oauth_scheme = OAuth2PasswordBearer(tokenUrl='/user/login')
-
-
+oauth_scheme = OAuth2PasswordBearer(tokenUrl='/login')
 
 
 def token_verifier(

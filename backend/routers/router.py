@@ -4,12 +4,12 @@ from fastapi_pagination import Page, add_pagination, paginate
 from pydantic import BaseModel
 from use_cases.use_cases import UsersUseCase 
 from security.jwt_token import token_verifier
+from fastapi.security import OAuth2PasswordRequestForm
+
+
 
 app = FastAPI()
 
-
-def validate_token():
-    return True
 
 class BookPayload(BaseModel):
     nome: str
@@ -43,8 +43,11 @@ def read_root():
 
 # Endpoint para login
 @app.post("/login")
-async def login_for_access_token(login_payload: LoginPayload):
-    login_data = login_payload.dict()
+async def login_for_access_token(request_form_user: OAuth2PasswordRequestForm = Depends()):
+    login_data = {
+        'email': request_form_user.username,
+        'password': request_form_user.password
+        }
     response = UsersUseCase().find_user_by_email(login_data)
     if response['status_code'] == 200:
         return response['detail']
@@ -64,7 +67,7 @@ async def login_for_access_token(email: str, password: str):
 
 # Endpoint para logout
 @app.post("/logout", response_model=dict)
-async def logout():
+async def logout(access_token: str = Depends(token_verifier),):
     return {"message": "Logout successful"}
 
 
@@ -72,7 +75,7 @@ async def logout():
 @app.get("/books", response_model=Page)
 async def find_all_books(
     search: str = None,
-    access_token: str = Depends(validate_token),
+    access_token: str = Depends(token_verifier),
     ):
     response = await BooksUseCase().find_all_books(search_text=search)
 
@@ -87,6 +90,7 @@ async def find_all_books(
 @app.post("/books", status_code=status.HTTP_201_CREATED)
 async def create_books(
     book_payload: BookPayload,
+    access_token: str = Depends(token_verifier),
     ):
     response = await BooksUseCase().create_books(payload=book_payload)
 
