@@ -10,7 +10,7 @@ BOOK_API_URL = os.getenv("BOOK_API_URL", "")
 # Configuração para geração do token JWT
 SECRET_KEY = os.getenv("SECRET_KEY", "SECRET_KEY")
 ALGORITHM = "HS256"
-EXPIRES_IN = 30
+EXPIRES_IN = 60
 
 class BooksUseCase:
     book_api_url = BOOK_API_URL
@@ -57,7 +57,7 @@ class BooksUseCase:
 
 class UsersUseCase:
 
-    def create_user(self, email, password):
+    def create_user(self, email: str, password: str):
         
         try:
             new_user = Users(email=email, password=password)

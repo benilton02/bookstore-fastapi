@@ -14,8 +14,8 @@ class Users(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False, unique=True)
+    user_name = Column(String, nullable=True, unique=True)
     password = Column(String, nullable=False)
-    blocked = Column(Boolean, default=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
