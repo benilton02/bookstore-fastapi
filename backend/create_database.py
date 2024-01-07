@@ -8,7 +8,7 @@ load_dotenv()
 POSTGRES_DB=os.getenv('POSTGRES_DB','postgresdatabase')
 POSTGRES_USER=os.getenv('POSTGRES_USER','postgresuser')
 POSTGRES_PASSWORD=os.getenv('POSTGRES_PASSWORD','postgrespassword')
-DOCKER_IP=os.getenv('DOCKER_IP','172.17.0.1')
+DOCKER_IP=os.getenv('DOCKER_IP','127.0.0.1')
 
 
 
@@ -19,7 +19,7 @@ user = POSTGRES_USER
 print('password', password)
 print('user', user)
 
-DB_URL = f'postgresql+pg8000://{user}:{password}@{DOCKER_IP}'
+DB_URL = f'postgresql+pg8000://{user}:{password}@{DOCKER_IP}/{DB_NAME}'
 
 engine = create_engine(DB_URL, isolation_level='AUTOCOMMIT')
 
