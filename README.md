@@ -12,7 +12,7 @@
  `POSTGRES_DB=postgresdatabase`
  `POSTGRES_USER=postgresuser`
  `POSTGRES_PASSWORD=postgrespassword`
- `BOOK_API_URL=http://54.167.117.206:8000/livro/`
+ `BOOK_API_URL=ExternalAPIURL`
  `SECRET_KEY=SECRET_KEY`
  `DOCKER_IP=127.0.0.1`
 
