@@ -26,6 +26,7 @@ export default async function RootLayout({
                 <nav className="w-[1024px] px-8 h-16 text-primary flex flex-row justify-end items-center space-x-4 underline">
                   <a href="/signin" className="font-bold text-xl">Sign in</a>
                   <a href="/signup" className="font-bold text-xl">Sign up</a>
+                  <a href="/signin" className="font-bold text-xl">Sign out</a>
                 </nav>
               </div>
           </div>
