@@ -1,17 +1,21 @@
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation'
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 export default function Page() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter()
+  const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   const handleLogin = async () => {
     // Handle login logic here
     console.log('Logging in with:', { username, password });
     try {
-      const url = 'http://localhost:7070/login';
+      const url = `${apiUrl}/login`;
       const data = new URLSearchParams({
         'grant_type': '',
         'username': username,

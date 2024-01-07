@@ -2,12 +2,16 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation'
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 export default function Page() {
 
 const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter()
+  const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   const handleSignup = async () => {
     // Handle signup logic here
@@ -15,7 +19,7 @@ const [username, setUsername] = useState('');
     console.log('Signing up with:', { email, password });
 
     try {
-      const url = `http://localhost:7070/singup?email=${email}&password=${password}`;
+      const url = `${apiUrl}/singup?email=${email}&password=${password}`;
   
       const response = await fetch(url, {
         method: 'POST',

@@ -3,6 +3,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation'
 
+import dotenv from 'dotenv';
+dotenv.config();
+
+
 export default function Page() {
   const [bookName, setBookName] = useState('');
   const [nomeDoAutor, setNomeDoAutor] = useState('')
@@ -14,6 +18,7 @@ export default function Page() {
   const [numEdicao, setNumEdicao] = useState('')
   const [loading, setLoading] = useState(false);
   const router = useRouter()
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 
   const handleProductRegistration = async () => {
@@ -54,7 +59,7 @@ export default function Page() {
 
         const token = localStorage.getItem('accessToken');
     
-        const response = await fetch('http://localhost:7070/books', {
+        const response = await fetch(`${apiUrl}/books`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

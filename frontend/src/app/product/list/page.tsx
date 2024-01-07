@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 interface Product {
   id: number
   nome: string
@@ -22,9 +25,11 @@ export default function () {
   const [searchTerm, setSearchTerm] = useState('');
   const [placeholder, setPlaceholder] = useState('Digite aqui...');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(3); // Defina o tamanho da página como necessário
+  const [pageSize, setPageSize] = useState(3);
   const [totalItems, setTotalItems] = useState(0);
   const router = useRouter();
+  
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   useEffect(() => {    
     fetchProductData();
@@ -33,7 +38,7 @@ export default function () {
   const fetchProductData = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`http://localhost:7070/books?page=${currentPage}&size=${pageSize}&search=${searchTerm}`, {
+      const response = await fetch(`${apiUrl}/books?page=${currentPage}&size=${pageSize}&search=${searchTerm}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -84,13 +89,6 @@ export default function () {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-2 border border-gray-300 rounded-md mb-4"
           />
-
-          {/* <button
-            onClick={handleSearch}
-            className="bg-primary text-white p-2 rounded-md ml-2 hover:bg-primary-dark"
-          >
-            Pesquisar
-          </button> */}
 
           <button
             onClick={handleRegister}
