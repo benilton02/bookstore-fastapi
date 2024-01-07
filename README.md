@@ -24,6 +24,9 @@
 - Dentro da pasta Backend levantar o container do Banco de Dados (POSTGRESQL):      `docker compose up --build -d --remove-orphans`
 
 
+## Criação do Banco de dados
+- Dentro da pasta Backend executar o seguinte comando: `python3 create_database.py`
+
 ## Migrações com alembic
 - Usar o comando para aplicar as migrações: `alembic upgrade heads`
 
