@@ -1,9 +1,11 @@
 'use client'
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
-    const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter()
 
   const handleLogin = async () => {
     // Handle login logic here
@@ -30,6 +32,7 @@ export default function Page() {
       if (response.ok) {
         const responseData = await response.json();
         localStorage.setItem('accessToken', responseData.access_token);
+        router.push('/product/list')
         console.log('Login bem-sucedido:', responseData);
 
         // Atribua o token à sua lógica de estado ou contexto

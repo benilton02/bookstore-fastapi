@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 
 interface Product {
   id: number
@@ -14,57 +15,25 @@ interface Product {
   numEdicao: number
 }
 
+// ... Seu código anterior
+
 export default function () {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [placeholder, setPlaceholder] = useState('Digite aqui...');
-  // Dummy product data for demonstration purposes
-  // const dummyProducts = [
-    // { id: 1, productName: 'Product A', price: 19.99, description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-    // { id: 2, productName: 'Product B', price: 29.99, description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.' },
-    // // Add more products as needed
-  // ];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(3); // Defina o tamanho da página como necessário
+  const [totalItems, setTotalItems] = useState(0);
+  const router = useRouter();
 
-  useEffect(() => {
-    // Fetch product data from an API or database
-    // For now, use the dummyProducts as sample data
-    
-    const fetchProductData = async () => {
-      try {
+  useEffect(() => {    
+    fetchProductData();
+  }, [currentPage, pageSize, searchTerm]);
 
-        const token = localStorage.getItem('accessToken');
-        const response = await fetch('http://localhost:7070/books?page=1&size=50', {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          debugger
-          setProducts(data.items);
-        } else {
-          console.error('Failed to fetch product data:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching product data:', error);
-      }
-    };
-
-    fetchProductData(); // Call the function to fetch product data
-  }, []);
-    
-
-  const handleSearch = async() => {
-    // Lógica para lidar com a pesquisa, se necessário
-    console.log('Pesquisando por:', searchTerm);
-    setSearchTerm('');
-    setPlaceholder('Nome do livro...');
+  const fetchProductData = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch(`http://localhost:7070/books?page=1&size=50&search=${searchTerm}`, {
+      const response = await fetch(`http://localhost:7070/books?page=${currentPage}&size=${pageSize}&search=${searchTerm}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -75,6 +44,7 @@ export default function () {
       if (response.ok) {
         const data = await response.json();
         setProducts(data.items);
+        setTotalItems(data.total);
       } else {
         console.error('Failed to fetch product data:', response.statusText);
       }
@@ -83,49 +53,56 @@ export default function () {
     }
   };
 
-  //   console.log('Fetching product data from')
-  //   setProducts(dummyProducts);
-  // }, []);
-  // Usar esse!
-//     useEffect(() => {
+  const handleSearch = async () => {
+    setSearchTerm('');
+    setPlaceholder('Nome do livro...');
+    setCurrentPage(1); // Redefine a página atual ao realizar uma nova pesquisa
+  };
 
-//     localStorage.getItem('token')
+  const handleRegister = () => {
+    router.push('/product/register');
+  };
 
-//     header: Bearer + token
-//     const fetchData = async () => {
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
-//       try {
-//         const response = await fetch(
-//           `http://localhost...`
-//         );
-//         const body = await response.json();
-//         console.log('Fetched data:', body);
-//         setProducts(body);
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//       } 
-//     };
-//   }, []);
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const paginationArray = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
     <div className="min-h-screen">
       <div className="max-w-2xl mx-auto p-6">
         <h2 className="text-2xl font-bold mb-6">Livros</h2>
         
-        <input
-          type="text"
-          placeholder="Digite aqui..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md mb-4"
-        />
 
-        <button
+        <div>
+          <input
+            type="text"
+            placeholder="Digite aqui..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md mb-4"
+          />
+
+          {/* <button
             onClick={handleSearch}
             className="bg-primary text-white p-2 rounded-md ml-2 hover:bg-primary-dark"
           >
             Pesquisar
+          </button> */}
+
+          <button
+            onClick={handleRegister}
+            className="bg-primary text-white p-2 rounded-md ml-2 hover:bg-primary-dark"
+          >
+            Casatrar Novo livro
           </button>
+
+        </div>
+        
+
+        
 
         <div className="grid gap-4">
           {products.map((product) => (
@@ -137,7 +114,20 @@ export default function () {
             </div>
           ))}
         </div>
+
+        {/* Adiciona os botões de paginação */}
+        <div className="flex mt-4">
+          {paginationArray.map((pageNumber) => (
+            <button
+              key={pageNumber}
+              onClick={() => handlePageChange(pageNumber)}
+              className={`mx-1 px-3 py-1 border ${currentPage === pageNumber ? 'bg-primary text-white' : 'border-gray-300'}`}
+            >
+              {pageNumber}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
-  };
+};

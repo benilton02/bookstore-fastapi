@@ -20,9 +20,9 @@ class Users(Base):
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
 
-POSTGRES_DB=os.getenv('POSTGRES_DB','mydatabase')
-POSTGRES_USER=os.getenv('POSTGRES_USER','myuser')
-POSTGRES_PASSWORD=os.getenv('POSTGRES_PASSWORD','mypassword')
+POSTGRES_DB=os.getenv('POSTGRES_DB','postgresdatabase')
+POSTGRES_USER=os.getenv('POSTGRES_USER','postgresuser')
+POSTGRES_PASSWORD=os.getenv('POSTGRES_PASSWORD','postgrespassword')
 DOCKER_IP=os.getenv('DOCKER_IP','172.17.0.1')
 
 engine = create_engine(f'postgresql+pg8000://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DOCKER_IP}:5432/{POSTGRES_DB}')

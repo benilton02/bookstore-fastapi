@@ -1,11 +1,13 @@
 'use client'
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
 
 const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter()
 
   const handleSignup = async () => {
     // Handle signup logic here
@@ -25,6 +27,8 @@ const [username, setUsername] = useState('');
   
       if (response.ok) {
         const data = await response.json();
+        router.push('/signin')
+
         console.log('Cadastro bem-sucedido:', data);
       } else {
         console.error('Falha no cadastro:', response.statusText);

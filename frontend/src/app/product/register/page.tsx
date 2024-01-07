@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
   const [bookName, setBookName] = useState('');
@@ -12,6 +13,7 @@ export default function Page() {
   const [anoDeEdicao, setAnoEdicao] = useState('')
   const [numEdicao, setNumEdicao] = useState('')
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
 
   const handleProductRegistration = async () => {
@@ -76,6 +78,11 @@ export default function Page() {
         setLoading(false);
       }
     };
+
+    const handleBackToList = () => {
+      router.push('/product/list');
+    }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="max-w-md w-full p-6 bg-gray-100 shadow-md">
@@ -213,7 +220,7 @@ export default function Page() {
           <button
             type="button"
             onClick={handleProductRegistration}
-            className="w-full bg-primary text-white p-2 rounded-md hover:bg-primary-dark relative"
+            className="mb-3  w-full bg-primary text-white p-2 rounded-md hover:bg-primary-dark relative"
           >
             {loading && (
               <div className="absolute inset-0 flex items-center justify-center">
@@ -223,13 +230,14 @@ export default function Page() {
             {loading ? 'Cadastrando...' : 'Cadastrar'}
           </button>
           
-          {/* <button
+          <button
             type="button"
-            onClick={handleProductRegistration}
+            onClick={handleBackToList}
             className="w-full bg-primary text-white p-2 rounded-md hover:bg-primary-dark"
           >
-            Cadastar
-          </button> */}
+            Voltar
+          </button>
+
         </form>
       </div>
     </div>

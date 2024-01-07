@@ -75,7 +75,7 @@ async def logout(access_token: str = Depends(token_verifier),):
 @app.get("/books", response_model=Page)
 async def find_all_books(
     search: str = None,
-    # access_token: str = Depends(token_verifier),
+    access_token: str = Depends(token_verifier),
     ):
     response = await BooksUseCase().find_all_books(search_text=search)
 
